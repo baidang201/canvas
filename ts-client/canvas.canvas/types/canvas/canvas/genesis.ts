@@ -1,23 +1,30 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { Canvas } from "./canvas";
 import { Params } from "./params";
 
 export const protobufPackage = "canvas.canvas";
 
 /** GenesisState defines the canvas module's genesis state. */
 export interface GenesisState {
+  params:
+    | Params
+    | undefined;
   /** this line is used by starport scaffolding # genesis/proto/state */
-  params: Params | undefined;
+  canvas: Canvas | undefined;
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined };
+  return { params: undefined, canvas: undefined };
 }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.canvas !== undefined) {
+      Canvas.encode(message.canvas, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -32,6 +39,9 @@ export const GenesisState = {
         case 1:
           message.params = Params.decode(reader, reader.uint32());
           break;
+        case 2:
+          message.canvas = Canvas.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -41,12 +51,16 @@ export const GenesisState = {
   },
 
   fromJSON(object: any): GenesisState {
-    return { params: isSet(object.params) ? Params.fromJSON(object.params) : undefined };
+    return {
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
+      canvas: isSet(object.canvas) ? Canvas.fromJSON(object.canvas) : undefined,
+    };
   },
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.canvas !== undefined && (obj.canvas = message.canvas ? Canvas.toJSON(message.canvas) : undefined);
     return obj;
   },
 
@@ -54,6 +68,9 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
+      : undefined;
+    message.canvas = (object.canvas !== undefined && object.canvas !== null)
+      ? Canvas.fromPartial(object.canvas)
       : undefined;
     return message;
   },

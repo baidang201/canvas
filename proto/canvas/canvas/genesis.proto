@@ -3,6 +3,7 @@ package canvas.canvas;
 
 import "gogoproto/gogo.proto";
 import "canvas/canvas/params.proto";
+import "canvas/canvas/canvas.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "canvas/x/canvas/types";
@@ -10,5 +11,6 @@ option go_package = "canvas/x/canvas/types";
 // GenesisState defines the canvas module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  Canvas canvas = 2;
   // this line is used by starport scaffolding # genesis/proto/state
 }

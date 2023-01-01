@@ -4,6 +4,52 @@ info:
   name: ''
   description: ''
 paths:
+  /canvas/canvas/canvas:
+    get:
+      summary: Queries a Canvas by index.
+      operationId: CanvasCanvasCanvas
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Canvas:
+                type: object
+                properties:
+                  width:
+                    type: string
+                    format: uint64
+                  height:
+                    type: string
+                    format: uint64
+                  refundDuration:
+                    type: string
+                  allowDenomPrefix:
+                    type: string
+                  priceForPoint:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /canvas/canvas/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -44719,6 +44765,22 @@ paths:
       tags:
         - Query
 definitions:
+  canvas.canvas.Canvas:
+    type: object
+    properties:
+      width:
+        type: string
+        format: uint64
+      height:
+        type: string
+        format: uint64
+      refundDuration:
+        type: string
+      allowDenomPrefix:
+        type: string
+      priceForPoint:
+        type: string
+        format: uint64
   canvas.canvas.MsgCreateCanvasResponse:
     type: object
     properties:
@@ -44736,6 +44798,25 @@ definitions:
   canvas.canvas.Params:
     type: object
     description: Params defines the parameters for the module.
+  canvas.canvas.QueryGetCanvasResponse:
+    type: object
+    properties:
+      Canvas:
+        type: object
+        properties:
+          width:
+            type: string
+            format: uint64
+          height:
+            type: string
+            format: uint64
+          refundDuration:
+            type: string
+          allowDenomPrefix:
+            type: string
+          priceForPoint:
+            type: string
+            format: uint64
   canvas.canvas.QueryParamsResponse:
     type: object
     properties:

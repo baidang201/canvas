@@ -1,0 +1,13 @@
+syntax = "proto3";
+package canvas.canvas;
+
+option go_package = "canvas/x/canvas/types";
+
+message Canvas {
+  uint64 width = 1; 
+  uint64 height = 2; 
+  string refundDuration = 3; 
+  string allowDenomPrefix = 4; 
+  uint64 priceForPoint = 5; 
+  
+}

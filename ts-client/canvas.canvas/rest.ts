@@ -9,6 +9,19 @@
  * ---------------------------------------------------------------
  */
 
+export interface CanvasCanvas {
+  /** @format uint64 */
+  width?: string;
+
+  /** @format uint64 */
+  height?: string;
+  refundDuration?: string;
+  allowDenomPrefix?: string;
+
+  /** @format uint64 */
+  priceForPoint?: string;
+}
+
 export interface CanvasMsgCreateCanvasResponse {
   gameIndex?: string;
 }
@@ -25,6 +38,10 @@ export interface CanvasMsgPaintResponse {
  * Params defines the parameters for the module.
  */
 export type CanvasParams = object;
+
+export interface CanvasQueryGetCanvasResponse {
+  Canvas?: CanvasCanvas;
+}
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
@@ -166,10 +183,26 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title canvas/canvas/genesis.proto
+ * @title canvas/canvas/canvas.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCanvas
+   * @summary Queries a Canvas by index.
+   * @request GET:/canvas/canvas/canvas
+   */
+  queryCanvas = (params: RequestParams = {}) =>
+    this.request<CanvasQueryGetCanvasResponse, RpcStatus>({
+      path: `/canvas/canvas/canvas`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

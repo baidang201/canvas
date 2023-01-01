@@ -9,7 +9,11 @@ import (
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
+	io "io"
 	math "math"
+	math_bits "math/bits"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -23,17 +27,170 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type MsgCreateCanvas struct {
+	Creator          string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id               string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Width            uint64 `protobuf:"varint,3,opt,name=width,proto3" json:"width,omitempty"`
+	Height           uint64 `protobuf:"varint,4,opt,name=height,proto3" json:"height,omitempty"`
+	RefundDuration   string `protobuf:"bytes,5,opt,name=refundDuration,proto3" json:"refundDuration,omitempty"`
+	AllowDenomPrefix string `protobuf:"bytes,6,opt,name=allowDenomPrefix,proto3" json:"allowDenomPrefix,omitempty"`
+	PriceForPoint    uint64 `protobuf:"varint,7,opt,name=priceForPoint,proto3" json:"priceForPoint,omitempty"`
+}
+
+func (m *MsgCreateCanvas) Reset()         { *m = MsgCreateCanvas{} }
+func (m *MsgCreateCanvas) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateCanvas) ProtoMessage()    {}
+func (*MsgCreateCanvas) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3af1c468c82d5a8b, []int{0}
+}
+func (m *MsgCreateCanvas) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateCanvas) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateCanvas.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateCanvas) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateCanvas.Merge(m, src)
+}
+func (m *MsgCreateCanvas) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateCanvas) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateCanvas.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateCanvas proto.InternalMessageInfo
+
+func (m *MsgCreateCanvas) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCreateCanvas) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *MsgCreateCanvas) GetWidth() uint64 {
+	if m != nil {
+		return m.Width
+	}
+	return 0
+}
+
+func (m *MsgCreateCanvas) GetHeight() uint64 {
+	if m != nil {
+		return m.Height
+	}
+	return 0
+}
+
+func (m *MsgCreateCanvas) GetRefundDuration() string {
+	if m != nil {
+		return m.RefundDuration
+	}
+	return ""
+}
+
+func (m *MsgCreateCanvas) GetAllowDenomPrefix() string {
+	if m != nil {
+		return m.AllowDenomPrefix
+	}
+	return ""
+}
+
+func (m *MsgCreateCanvas) GetPriceForPoint() uint64 {
+	if m != nil {
+		return m.PriceForPoint
+	}
+	return 0
+}
+
+type MsgCreateCanvasResponse struct {
+	GameIndex string `protobuf:"bytes,1,opt,name=gameIndex,proto3" json:"gameIndex,omitempty"`
+}
+
+func (m *MsgCreateCanvasResponse) Reset()         { *m = MsgCreateCanvasResponse{} }
+func (m *MsgCreateCanvasResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCreateCanvasResponse) ProtoMessage()    {}
+func (*MsgCreateCanvasResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3af1c468c82d5a8b, []int{1}
+}
+func (m *MsgCreateCanvasResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCreateCanvasResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCreateCanvasResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCreateCanvasResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCreateCanvasResponse.Merge(m, src)
+}
+func (m *MsgCreateCanvasResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCreateCanvasResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCreateCanvasResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCreateCanvasResponse proto.InternalMessageInfo
+
+func (m *MsgCreateCanvasResponse) GetGameIndex() string {
+	if m != nil {
+		return m.GameIndex
+	}
+	return ""
+}
+
+func init() {
+	proto.RegisterType((*MsgCreateCanvas)(nil), "canvas.canvas.MsgCreateCanvas")
+	proto.RegisterType((*MsgCreateCanvasResponse)(nil), "canvas.canvas.MsgCreateCanvasResponse")
+}
+
 func init() { proto.RegisterFile("canvas/canvas/tx.proto", fileDescriptor_3af1c468c82d5a8b) }
 
 var fileDescriptor_3af1c468c82d5a8b = []byte{
-	// 100 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4b, 0x4e, 0xcc, 0x2b,
-	0x4b, 0x2c, 0xd6, 0x87, 0x52, 0x25, 0x15, 0x7a, 0x05, 0x45, 0xf9, 0x25, 0xf9, 0x42, 0xbc, 0x10,
-	0x01, 0x3d, 0x08, 0x65, 0xc4, 0xca, 0xc5, 0xec, 0x5b, 0x9c, 0xee, 0xa4, 0x7f, 0xe2, 0x91, 0x1c,
-	0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1,
-	0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51, 0xa2, 0x50, 0x03, 0x2a, 0xe0, 0x26, 0x55, 0x16, 0xa4,
-	0x16, 0x27, 0xb1, 0x81, 0x4d, 0x33, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x0c, 0x30, 0x5e, 0xc5,
-	0x67, 0x00, 0x00, 0x00,
+	// 304 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x91, 0xcf, 0x4a, 0x42, 0x41,
+	0x14, 0x87, 0x1d, 0xff, 0xe2, 0x21, 0x2d, 0x86, 0xb2, 0x21, 0x62, 0x10, 0x09, 0x91, 0x16, 0x57,
+	0xa8, 0x45, 0xfb, 0x94, 0xa0, 0x85, 0x20, 0x2e, 0x5a, 0x04, 0x2d, 0x26, 0xef, 0xf1, 0x3a, 0xa0,
+	0x33, 0x97, 0x99, 0x31, 0x6f, 0x6f, 0xd1, 0x63, 0xb5, 0x74, 0xd9, 0x32, 0xbc, 0x2f, 0x12, 0x8d,
+	0xd7, 0x42, 0x83, 0x56, 0x87, 0xef, 0x9b, 0xe1, 0x1c, 0xce, 0xf9, 0x41, 0x63, 0x2c, 0xd4, 0x8b,
+	0xb0, 0xdd, 0xac, 0xb8, 0x24, 0x88, 0x8d, 0x76, 0x9a, 0xd6, 0x36, 0x22, 0xd8, 0x94, 0x56, 0x4a,
+	0xe0, 0x70, 0x60, 0xa3, 0x9e, 0x41, 0xe1, 0xb0, 0xe7, 0x1d, 0x65, 0x50, 0x19, 0x7f, 0xb3, 0x36,
+	0x8c, 0x34, 0x49, 0xa7, 0x3a, 0xda, 0x22, 0xad, 0x43, 0x5e, 0x86, 0x2c, 0xef, 0x65, 0x5e, 0x86,
+	0xf4, 0x18, 0x4a, 0x4b, 0x19, 0xba, 0x29, 0x2b, 0x34, 0x49, 0xa7, 0x38, 0xda, 0x00, 0x6d, 0x40,
+	0x79, 0x8a, 0x32, 0x9a, 0x3a, 0x56, 0xf4, 0x3a, 0x23, 0xda, 0x86, 0xba, 0xc1, 0xc9, 0x42, 0x85,
+	0xfd, 0x85, 0x11, 0x4e, 0x6a, 0xc5, 0x4a, 0xbe, 0xd3, 0x9e, 0xa5, 0x97, 0x70, 0x24, 0x66, 0x33,
+	0xbd, 0xec, 0xa3, 0xd2, 0xf3, 0xa1, 0xc1, 0x89, 0x4c, 0x58, 0xd9, 0xff, 0xfc, 0xe3, 0xe9, 0x05,
+	0xd4, 0x62, 0x23, 0xc7, 0x78, 0xa7, 0xcd, 0x50, 0x4b, 0xe5, 0x58, 0xc5, 0x8f, 0xdc, 0x95, 0xad,
+	0x1b, 0x38, 0xdd, 0x5b, 0x72, 0x84, 0x36, 0xd6, 0xca, 0x22, 0x3d, 0x87, 0x6a, 0x24, 0xe6, 0x78,
+	0xaf, 0x42, 0x4c, 0xb2, 0x75, 0x7f, 0xc5, 0xd5, 0x13, 0x14, 0x06, 0x36, 0xa2, 0x0f, 0x70, 0xb0,
+	0x73, 0x21, 0x1e, 0xec, 0x5c, 0x31, 0xd8, 0x6b, 0x7e, 0xd6, 0xfe, 0xff, 0x7d, 0x3b, 0xfc, 0xb6,
+	0xfb, 0xbe, 0xe6, 0x64, 0xb5, 0xe6, 0xe4, 0x73, 0xcd, 0xc9, 0x5b, 0xca, 0x73, 0xab, 0x94, 0xe7,
+	0x3e, 0x52, 0x9e, 0x7b, 0x3c, 0xc9, 0x72, 0x4b, 0x7e, 0x02, 0x7c, 0x8d, 0xd1, 0x3e, 0x97, 0x7d,
+	0x88, 0xd7, 0x5f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x4f, 0x53, 0xb9, 0x50, 0xde, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -48,6 +205,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
+	CreateCanvas(ctx context.Context, in *MsgCreateCanvas, opts ...grpc.CallOption) (*MsgCreateCanvasResponse, error)
 }
 
 type msgClient struct {
@@ -58,22 +216,621 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
+func (c *msgClient) CreateCanvas(ctx context.Context, in *MsgCreateCanvas, opts ...grpc.CallOption) (*MsgCreateCanvasResponse, error) {
+	out := new(MsgCreateCanvasResponse)
+	err := c.cc.Invoke(ctx, "/canvas.canvas.Msg/CreateCanvas", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
+	CreateCanvas(context.Context, *MsgCreateCanvas) (*MsgCreateCanvasResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct {
 }
 
+func (*UnimplementedMsgServer) CreateCanvas(ctx context.Context, req *MsgCreateCanvas) (*MsgCreateCanvasResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCanvas not implemented")
+}
+
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 	s.RegisterService(&_Msg_serviceDesc, srv)
+}
+
+func _Msg_CreateCanvas_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateCanvas)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateCanvas(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/canvas.canvas.Msg/CreateCanvas",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateCanvas(ctx, req.(*MsgCreateCanvas))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "canvas.canvas.Msg",
 	HandlerType: (*MsgServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "canvas/canvas/tx.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateCanvas",
+			Handler:    _Msg_CreateCanvas_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "canvas/canvas/tx.proto",
 }
+
+func (m *MsgCreateCanvas) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateCanvas) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateCanvas) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.PriceForPoint != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.PriceForPoint))
+		i--
+		dAtA[i] = 0x38
+	}
+	if len(m.AllowDenomPrefix) > 0 {
+		i -= len(m.AllowDenomPrefix)
+		copy(dAtA[i:], m.AllowDenomPrefix)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.AllowDenomPrefix)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if len(m.RefundDuration) > 0 {
+		i -= len(m.RefundDuration)
+		copy(dAtA[i:], m.RefundDuration)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.RefundDuration)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.Height != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Height))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.Width != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Width))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Id)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCreateCanvasResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCreateCanvasResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCreateCanvasResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.GameIndex) > 0 {
+		i -= len(m.GameIndex)
+		copy(dAtA[i:], m.GameIndex)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.GameIndex)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
+	offset -= sovTx(v)
+	base := offset
+	for v >= 1<<7 {
+		dAtA[offset] = uint8(v&0x7f | 0x80)
+		v >>= 7
+		offset++
+	}
+	dAtA[offset] = uint8(v)
+	return base
+}
+func (m *MsgCreateCanvas) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.Width != 0 {
+		n += 1 + sovTx(uint64(m.Width))
+	}
+	if m.Height != 0 {
+		n += 1 + sovTx(uint64(m.Height))
+	}
+	l = len(m.RefundDuration)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.AllowDenomPrefix)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.PriceForPoint != 0 {
+		n += 1 + sovTx(uint64(m.PriceForPoint))
+	}
+	return n
+}
+
+func (m *MsgCreateCanvasResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.GameIndex)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func sovTx(x uint64) (n int) {
+	return (math_bits.Len64(x|1) + 6) / 7
+}
+func sozTx(x uint64) (n int) {
+	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *MsgCreateCanvas) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateCanvas: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateCanvas: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Width", wireType)
+			}
+			m.Width = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Width |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Height", wireType)
+			}
+			m.Height = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Height |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RefundDuration", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RefundDuration = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AllowDenomPrefix", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.AllowDenomPrefix = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PriceForPoint", wireType)
+			}
+			m.PriceForPoint = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PriceForPoint |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCreateCanvasResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCreateCanvasResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCreateCanvasResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GameIndex", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.GameIndex = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func skipTx(dAtA []byte) (n int, err error) {
+	l := len(dAtA)
+	iNdEx := 0
+	depth := 0
+	for iNdEx < l {
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return 0, ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return 0, io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		wireType := int(wire & 0x7)
+		switch wireType {
+		case 0:
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return 0, io.ErrUnexpectedEOF
+				}
+				iNdEx++
+				if dAtA[iNdEx-1] < 0x80 {
+					break
+				}
+			}
+		case 1:
+			iNdEx += 8
+		case 2:
+			var length int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return 0, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				length |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if length < 0 {
+				return 0, ErrInvalidLengthTx
+			}
+			iNdEx += length
+		case 3:
+			depth++
+		case 4:
+			if depth == 0 {
+				return 0, ErrUnexpectedEndOfGroupTx
+			}
+			depth--
+		case 5:
+			iNdEx += 4
+		default:
+			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
+		}
+		if iNdEx < 0 {
+			return 0, ErrInvalidLengthTx
+		}
+		if depth == 0 {
+			return iNdEx, nil
+		}
+	}
+	return 0, io.ErrUnexpectedEOF
+}
+
+var (
+	ErrInvalidLengthTx        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowTx          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupTx = fmt.Errorf("proto: unexpected end of group")
+)

@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export interface CanvasMsgCreateCanvasResponse {
+  gameIndex?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */

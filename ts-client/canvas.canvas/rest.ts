@@ -13,6 +13,14 @@ export interface CanvasMsgCreateCanvasResponse {
   gameIndex?: string;
 }
 
+export interface CanvasMsgPaintResponse {
+  /** @format int32 */
+  x?: number;
+
+  /** @format int32 */
+  y?: number;
+}
+
 /**
  * Params defines the parameters for the module.
  */

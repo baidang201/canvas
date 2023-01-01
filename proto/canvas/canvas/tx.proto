@@ -8,6 +8,7 @@ option go_package = "canvas/x/canvas/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreateCanvas(MsgCreateCanvas) returns (MsgCreateCanvasResponse);
+  rpc Paint(MsgPaint) returns (MsgPaintResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -23,6 +24,19 @@ message MsgCreateCanvas {
 
 message MsgCreateCanvasResponse {
   string gameIndex = 1;
+}
+
+message MsgPaint {
+  string creator = 1;
+  string id = 2;
+  uint64 x = 3;
+  uint64 y = 4;
+  uint64 amount = 5;
+}
+
+message MsgPaintResponse {
+  int32 x = 1;
+  int32 y = 2;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

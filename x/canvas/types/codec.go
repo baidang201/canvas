@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateCanvas{}, "canvas/CreateCanvas", nil)
+	cdc.RegisterConcrete(&MsgPaint{}, "canvas/Paint", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateCanvas{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgPaint{},
 	)
 	// this line is used by starport scaffolding # 3
 

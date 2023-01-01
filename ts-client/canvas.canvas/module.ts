@@ -8,9 +8,10 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgCreateCanvas } from "./types/canvas/canvas/tx";
+import { MsgPaint } from "./types/canvas/canvas/tx";
 
 
-export { MsgCreateCanvas };
+export { MsgCreateCanvas, MsgPaint };
 
 type sendMsgCreateCanvasParams = {
   value: MsgCreateCanvas,
@@ -18,9 +19,19 @@ type sendMsgCreateCanvasParams = {
   memo?: string
 };
 
+type sendMsgPaintParams = {
+  value: MsgPaint,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgCreateCanvasParams = {
   value: MsgCreateCanvas,
+};
+
+type msgPaintParams = {
+  value: MsgPaint,
 };
 
 
@@ -55,12 +66,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgPaint({ value, fee, memo }: sendMsgPaintParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgPaint: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgPaint({ value: MsgPaint.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgPaint: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgCreateCanvas({ value }: msgCreateCanvasParams): EncodeObject {
 			try {
 				return { typeUrl: "/canvas.canvas.MsgCreateCanvas", value: MsgCreateCanvas.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateCanvas: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgPaint({ value }: msgPaintParams): EncodeObject {
+			try {
+				return { typeUrl: "/canvas.canvas.MsgPaint", value: MsgPaint.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgPaint: Could not create message: ' + e.message)
 			}
 		},
 		

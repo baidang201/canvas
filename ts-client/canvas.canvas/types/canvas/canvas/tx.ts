@@ -18,6 +18,19 @@ export interface MsgCreateCanvasResponse {
   gameIndex: string;
 }
 
+export interface MsgPaint {
+  creator: string;
+  id: string;
+  x: number;
+  y: number;
+  amount: number;
+}
+
+export interface MsgPaintResponse {
+  x: number;
+  y: number;
+}
+
 function createBaseMsgCreateCanvas(): MsgCreateCanvas {
   return { creator: "", id: "", width: 0, height: 0, refundDuration: "", allowDenomPrefix: "", priceForPoint: 0 };
 }
@@ -168,10 +181,151 @@ export const MsgCreateCanvasResponse = {
   },
 };
 
+function createBaseMsgPaint(): MsgPaint {
+  return { creator: "", id: "", x: 0, y: 0, amount: 0 };
+}
+
+export const MsgPaint = {
+  encode(message: MsgPaint, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+    if (message.x !== 0) {
+      writer.uint32(24).uint64(message.x);
+    }
+    if (message.y !== 0) {
+      writer.uint32(32).uint64(message.y);
+    }
+    if (message.amount !== 0) {
+      writer.uint32(40).uint64(message.amount);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPaint {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPaint();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.id = reader.string();
+          break;
+        case 3:
+          message.x = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.y = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.amount = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPaint {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      id: isSet(object.id) ? String(object.id) : "",
+      x: isSet(object.x) ? Number(object.x) : 0,
+      y: isSet(object.y) ? Number(object.y) : 0,
+      amount: isSet(object.amount) ? Number(object.amount) : 0,
+    };
+  },
+
+  toJSON(message: MsgPaint): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.id !== undefined && (obj.id = message.id);
+    message.x !== undefined && (obj.x = Math.round(message.x));
+    message.y !== undefined && (obj.y = Math.round(message.y));
+    message.amount !== undefined && (obj.amount = Math.round(message.amount));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgPaint>, I>>(object: I): MsgPaint {
+    const message = createBaseMsgPaint();
+    message.creator = object.creator ?? "";
+    message.id = object.id ?? "";
+    message.x = object.x ?? 0;
+    message.y = object.y ?? 0;
+    message.amount = object.amount ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgPaintResponse(): MsgPaintResponse {
+  return { x: 0, y: 0 };
+}
+
+export const MsgPaintResponse = {
+  encode(message: MsgPaintResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.x !== 0) {
+      writer.uint32(8).int32(message.x);
+    }
+    if (message.y !== 0) {
+      writer.uint32(16).int32(message.y);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgPaintResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgPaintResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.x = reader.int32();
+          break;
+        case 2:
+          message.y = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPaintResponse {
+    return { x: isSet(object.x) ? Number(object.x) : 0, y: isSet(object.y) ? Number(object.y) : 0 };
+  },
+
+  toJSON(message: MsgPaintResponse): unknown {
+    const obj: any = {};
+    message.x !== undefined && (obj.x = Math.round(message.x));
+    message.y !== undefined && (obj.y = Math.round(message.y));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgPaintResponse>, I>>(object: I): MsgPaintResponse {
+    const message = createBaseMsgPaintResponse();
+    message.x = object.x ?? 0;
+    message.y = object.y ?? 0;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateCanvas(request: MsgCreateCanvas): Promise<MsgCreateCanvasResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Paint(request: MsgPaint): Promise<MsgPaintResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -179,11 +333,18 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.CreateCanvas = this.CreateCanvas.bind(this);
+    this.Paint = this.Paint.bind(this);
   }
   CreateCanvas(request: MsgCreateCanvas): Promise<MsgCreateCanvasResponse> {
     const data = MsgCreateCanvas.encode(request).finish();
     const promise = this.rpc.request("canvas.canvas.Msg", "CreateCanvas", data);
     return promise.then((data) => MsgCreateCanvasResponse.decode(new _m0.Reader(data)));
+  }
+
+  Paint(request: MsgPaint): Promise<MsgPaintResponse> {
+    const data = MsgPaint.encode(request).finish();
+    const promise = this.rpc.request("canvas.canvas.Msg", "Paint", data);
+    return promise.then((data) => MsgPaintResponse.decode(new _m0.Reader(data)));
   }
 }
 

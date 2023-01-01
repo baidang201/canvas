@@ -44724,6 +44724,15 @@ definitions:
     properties:
       gameIndex:
         type: string
+  canvas.canvas.MsgPaintResponse:
+    type: object
+    properties:
+      x:
+        type: integer
+        format: int32
+      'y':
+        type: integer
+        format: int32
   canvas.canvas.Params:
     type: object
     description: Params defines the parameters for the module.

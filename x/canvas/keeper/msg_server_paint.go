@@ -13,9 +13,9 @@ func (k msgServer) Paint(goCtx context.Context, msg *types.MsgPaint) (*types.Msg
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
-	canvas, err := k.GetCanvas(ctx)
-	if err != nil {
-		return nil, err
+	canvas, found := k.GetCanvas(ctx)
+	if !found {
+		return nil, types.ErrCanvasNotExist
 	}
 
 	if msg.X >= canvas.Width || msg.Y >= canvas.Height {

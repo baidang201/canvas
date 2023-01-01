@@ -2,9 +2,10 @@ import { Client, registry, MissingWalletError } from 'canvas-client-ts'
 
 import { Canvas } from "canvas-client-ts/canvas.canvas/types"
 import { Params } from "canvas-client-ts/canvas.canvas/types"
+import { Point } from "canvas-client-ts/canvas.canvas/types"
 
 
-export { Canvas, Params };
+export { Canvas, Params, Point };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -41,6 +42,7 @@ const getDefaultState = () => {
 				_Structure: {
 						Canvas: getStructure(Canvas.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
+						Point: getStructure(Point.fromPartial({})),
 						
 		},
 		_Registry: registry,

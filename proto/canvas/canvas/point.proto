@@ -1,0 +1,11 @@
+syntax = "proto3";
+package canvas.canvas;
+
+option go_package = "canvas/x/canvas/types";
+
+message Point {
+  
+  uint64 x = 1; 
+  uint64 y = 2; 
+  string color = 3; 
+}

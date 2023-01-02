@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"canvas/x/canvas/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -12,14 +11,12 @@ func (k msgServer) CreateCanvas(goCtx context.Context, msg *types.MsgCreateCanva
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
-	kvStore := ctx.KVStore(k.storeKey)
-	prefixStore := prefix.NewStore(kvStore, []byte("canvas/"))
-
-	if prefixStore.Has([]byte(msg.Id)) {
+	canvas, found := k.GetCanvas(ctx)
+	if found {
 		return nil, types.ErrCanvasAlreadyExist
 	}
 
-	canvas := types.Canvas{
+	canvas = types.Canvas{
 		//Id:               msg.Id,
 		Width:            msg.Width,
 		Height:           msg.Height,
@@ -27,13 +24,7 @@ func (k msgServer) CreateCanvas(goCtx context.Context, msg *types.MsgCreateCanva
 		AllowDenomPrefix: msg.AllowDenomPrefix,
 		PriceForPoint:    msg.PriceForPoint,
 	}
-
-	bz, err := k.cdc.Marshal(&canvas)
-	if err != nil {
-		return nil, err
-	}
-
-	prefixStore.Set([]byte(msg.Id), bz)
+	k.SetCanvas(ctx, canvas)
 
 	return &types.MsgCreateCanvasResponse{
 		GameIndex: msg.Id,

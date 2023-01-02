@@ -175,14 +175,20 @@ func (msg *MsgPaint) ValidateBasic() error {
 ignite chain serve
 
 
+## build client
 ```
 cd cmd/canvasd
 go build
+```
 
+## import test account key
+```
 export alice=$(canvasd keys show alice -a)
 echo $alice
+```
 
-
+## create canvas
+```
 canvasd tx canvas create-canvas 0 100 100 "" "" 1 --from $alice --gas auto
 
 canvasd query canvas show-canvas 
@@ -197,6 +203,7 @@ output
   width: "100"
 ```
 
+## paint point
 ```
 canvasd tx canvas paint 0 0 0  0 --from $alice --gas auto
 canvasd tx canvas paint 0 0 1   2550 --from $alice --gas auto

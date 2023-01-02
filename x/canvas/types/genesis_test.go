@@ -29,9 +29,31 @@ func TestGenesisState_Validate(t *testing.T) {
 					AllowDenomPrefix: "13",
 					PriceForPoint:    91,
 				},
+				StoredColorsList: []types.StoredColors{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated storedColors",
+			genState: &types.GenesisState{
+				StoredColorsList: []types.StoredColors{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

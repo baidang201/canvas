@@ -21,6 +21,14 @@ func TestGenesis(t *testing.T) {
 			AllowDenomPrefix: "17",
 			PriceForPoint:    12,
 		},
+		StoredColorsList: []types.StoredColors{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -33,5 +41,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.Equal(t, genesisState.Canvas, got.Canvas)
+	require.ElementsMatch(t, genesisState.StoredColorsList, got.StoredColorsList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

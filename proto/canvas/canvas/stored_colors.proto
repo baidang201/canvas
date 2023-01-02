@@ -1,0 +1,11 @@
+syntax = "proto3";
+package canvas.canvas;
+
+option go_package = "canvas/x/canvas/types";
+
+message StoredColors {
+  string index = 1; 
+  uint64 color = 2; 
+  
+}
+

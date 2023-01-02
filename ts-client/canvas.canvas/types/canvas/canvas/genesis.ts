@@ -2,20 +2,22 @@
 import _m0 from "protobufjs/minimal";
 import { Canvas } from "./canvas";
 import { Params } from "./params";
+import { StoredColors } from "./stored_colors";
 
 export const protobufPackage = "canvas.canvas";
 
 /** GenesisState defines the canvas module's genesis state. */
 export interface GenesisState {
-  params:
-    | Params
+  params: Params | undefined;
+  canvas:
+    | Canvas
     | undefined;
   /** this line is used by starport scaffolding # genesis/proto/state */
-  canvas: Canvas | undefined;
+  storedColorsList: StoredColors[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, canvas: undefined };
+  return { params: undefined, canvas: undefined, storedColorsList: [] };
 }
 
 export const GenesisState = {
@@ -25,6 +27,9 @@ export const GenesisState = {
     }
     if (message.canvas !== undefined) {
       Canvas.encode(message.canvas, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.storedColorsList) {
+      StoredColors.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -42,6 +47,9 @@ export const GenesisState = {
         case 2:
           message.canvas = Canvas.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.storedColorsList.push(StoredColors.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -54,6 +62,9 @@ export const GenesisState = {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       canvas: isSet(object.canvas) ? Canvas.fromJSON(object.canvas) : undefined,
+      storedColorsList: Array.isArray(object?.storedColorsList)
+        ? object.storedColorsList.map((e: any) => StoredColors.fromJSON(e))
+        : [],
     };
   },
 
@@ -61,6 +72,11 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     message.canvas !== undefined && (obj.canvas = message.canvas ? Canvas.toJSON(message.canvas) : undefined);
+    if (message.storedColorsList) {
+      obj.storedColorsList = message.storedColorsList.map((e) => e ? StoredColors.toJSON(e) : undefined);
+    } else {
+      obj.storedColorsList = [];
+    }
     return obj;
   },
 
@@ -72,6 +88,7 @@ export const GenesisState = {
     message.canvas = (object.canvas !== undefined && object.canvas !== null)
       ? Canvas.fromPartial(object.canvas)
       : undefined;
+    message.storedColorsList = object.storedColorsList?.map((e) => StoredColors.fromPartial(e)) || [];
     return message;
   },
 };

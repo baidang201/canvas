@@ -7,17 +7,11 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgCreateCanvas } from "./types/canvas/canvas/tx";
 import { MsgPaint } from "./types/canvas/canvas/tx";
+import { MsgCreateCanvas } from "./types/canvas/canvas/tx";
 
 
-export { MsgCreateCanvas, MsgPaint };
-
-type sendMsgCreateCanvasParams = {
-  value: MsgCreateCanvas,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgPaint, MsgCreateCanvas };
 
 type sendMsgPaintParams = {
   value: MsgPaint,
@@ -25,13 +19,19 @@ type sendMsgPaintParams = {
   memo?: string
 };
 
-
-type msgCreateCanvasParams = {
+type sendMsgCreateCanvasParams = {
   value: MsgCreateCanvas,
+  fee?: StdFee,
+  memo?: string
 };
+
 
 type msgPaintParams = {
   value: MsgPaint,
+};
+
+type msgCreateCanvasParams = {
+  value: MsgCreateCanvas,
 };
 
 
@@ -52,20 +52,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgCreateCanvas({ value, fee, memo }: sendMsgCreateCanvasParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateCanvas: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateCanvas({ value: MsgCreateCanvas.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateCanvas: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgPaint({ value, fee, memo }: sendMsgPaintParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgPaint: Unable to sign Tx. Signer is not present.')
@@ -80,20 +66,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgCreateCanvas({ value }: msgCreateCanvasParams): EncodeObject {
-			try {
-				return { typeUrl: "/canvas.canvas.MsgCreateCanvas", value: MsgCreateCanvas.fromPartial( value ) }  
+		async sendMsgCreateCanvas({ value, fee, memo }: sendMsgCreateCanvasParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateCanvas: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateCanvas({ value: MsgCreateCanvas.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgCreateCanvas: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgCreateCanvas: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
 		
 		msgPaint({ value }: msgPaintParams): EncodeObject {
 			try {
 				return { typeUrl: "/canvas.canvas.MsgPaint", value: MsgPaint.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgPaint: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgCreateCanvas({ value }: msgCreateCanvasParams): EncodeObject {
+			try {
+				return { typeUrl: "/canvas.canvas.MsgCreateCanvas", value: MsgCreateCanvas.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgCreateCanvas: Could not create message: ' + e.message)
 			}
 		},
 		

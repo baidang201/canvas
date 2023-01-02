@@ -6,7 +6,7 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
+	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -193,38 +193,239 @@ func (m *QueryGetCanvasResponse) GetCanvas() Canvas {
 	return Canvas{}
 }
 
+type QueryGetStoredColorsRequest struct {
+	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryGetStoredColorsRequest) Reset()         { *m = QueryGetStoredColorsRequest{} }
+func (m *QueryGetStoredColorsRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetStoredColorsRequest) ProtoMessage()    {}
+func (*QueryGetStoredColorsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3f6eb60a4bb63216, []int{4}
+}
+func (m *QueryGetStoredColorsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetStoredColorsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetStoredColorsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetStoredColorsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetStoredColorsRequest.Merge(m, src)
+}
+func (m *QueryGetStoredColorsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetStoredColorsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetStoredColorsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetStoredColorsRequest proto.InternalMessageInfo
+
+func (m *QueryGetStoredColorsRequest) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type QueryGetStoredColorsResponse struct {
+	StoredColors StoredColors `protobuf:"bytes,1,opt,name=storedColors,proto3" json:"storedColors"`
+}
+
+func (m *QueryGetStoredColorsResponse) Reset()         { *m = QueryGetStoredColorsResponse{} }
+func (m *QueryGetStoredColorsResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetStoredColorsResponse) ProtoMessage()    {}
+func (*QueryGetStoredColorsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3f6eb60a4bb63216, []int{5}
+}
+func (m *QueryGetStoredColorsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetStoredColorsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetStoredColorsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetStoredColorsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetStoredColorsResponse.Merge(m, src)
+}
+func (m *QueryGetStoredColorsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetStoredColorsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetStoredColorsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetStoredColorsResponse proto.InternalMessageInfo
+
+func (m *QueryGetStoredColorsResponse) GetStoredColors() StoredColors {
+	if m != nil {
+		return m.StoredColors
+	}
+	return StoredColors{}
+}
+
+type QueryAllStoredColorsRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllStoredColorsRequest) Reset()         { *m = QueryAllStoredColorsRequest{} }
+func (m *QueryAllStoredColorsRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllStoredColorsRequest) ProtoMessage()    {}
+func (*QueryAllStoredColorsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3f6eb60a4bb63216, []int{6}
+}
+func (m *QueryAllStoredColorsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllStoredColorsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllStoredColorsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllStoredColorsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllStoredColorsRequest.Merge(m, src)
+}
+func (m *QueryAllStoredColorsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllStoredColorsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllStoredColorsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllStoredColorsRequest proto.InternalMessageInfo
+
+func (m *QueryAllStoredColorsRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllStoredColorsResponse struct {
+	StoredColors []StoredColors      `protobuf:"bytes,1,rep,name=storedColors,proto3" json:"storedColors"`
+	Pagination   *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllStoredColorsResponse) Reset()         { *m = QueryAllStoredColorsResponse{} }
+func (m *QueryAllStoredColorsResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllStoredColorsResponse) ProtoMessage()    {}
+func (*QueryAllStoredColorsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3f6eb60a4bb63216, []int{7}
+}
+func (m *QueryAllStoredColorsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllStoredColorsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllStoredColorsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllStoredColorsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllStoredColorsResponse.Merge(m, src)
+}
+func (m *QueryAllStoredColorsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllStoredColorsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllStoredColorsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllStoredColorsResponse proto.InternalMessageInfo
+
+func (m *QueryAllStoredColorsResponse) GetStoredColors() []StoredColors {
+	if m != nil {
+		return m.StoredColors
+	}
+	return nil
+}
+
+func (m *QueryAllStoredColorsResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "canvas.canvas.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "canvas.canvas.QueryParamsResponse")
 	proto.RegisterType((*QueryGetCanvasRequest)(nil), "canvas.canvas.QueryGetCanvasRequest")
 	proto.RegisterType((*QueryGetCanvasResponse)(nil), "canvas.canvas.QueryGetCanvasResponse")
+	proto.RegisterType((*QueryGetStoredColorsRequest)(nil), "canvas.canvas.QueryGetStoredColorsRequest")
+	proto.RegisterType((*QueryGetStoredColorsResponse)(nil), "canvas.canvas.QueryGetStoredColorsResponse")
+	proto.RegisterType((*QueryAllStoredColorsRequest)(nil), "canvas.canvas.QueryAllStoredColorsRequest")
+	proto.RegisterType((*QueryAllStoredColorsResponse)(nil), "canvas.canvas.QueryAllStoredColorsResponse")
 }
 
 func init() { proto.RegisterFile("canvas/canvas/query.proto", fileDescriptor_3f6eb60a4bb63216) }
 
 var fileDescriptor_3f6eb60a4bb63216 = []byte{
-	// 333 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x91, 0xc1, 0x4a, 0xfb, 0x40,
-	0x10, 0xc6, 0xb3, 0x7f, 0xfe, 0xf6, 0xb0, 0xe2, 0x65, 0x6d, 0xac, 0x06, 0x5d, 0x35, 0x28, 0x88,
-	0x87, 0x2c, 0x6d, 0xdf, 0xa0, 0x1e, 0x04, 0x41, 0xd0, 0x1e, 0xbd, 0x6d, 0xcb, 0x12, 0x0a, 0x76,
-	0x77, 0xdb, 0xdd, 0x16, 0x7b, 0xf5, 0x09, 0x04, 0x5f, 0xaa, 0xc7, 0x82, 0x17, 0x4f, 0x22, 0x8d,
-	0x57, 0xdf, 0x41, 0xba, 0xb3, 0x41, 0x12, 0xa3, 0x3d, 0x4d, 0x32, 0xdf, 0x6f, 0xbe, 0xf9, 0x26,
-	0xc1, 0x7b, 0x7d, 0x2e, 0xa7, 0xdc, 0x30, 0x5f, 0x46, 0x13, 0x31, 0x9e, 0x25, 0x7a, 0xac, 0xac,
-	0x22, 0x5b, 0xd0, 0x4b, 0xa0, 0x44, 0xf5, 0x54, 0xa5, 0xca, 0x29, 0x6c, 0xf5, 0x04, 0x50, 0xb4,
-	0x9f, 0x2a, 0x95, 0xde, 0x0b, 0xc6, 0xf5, 0x80, 0x71, 0x29, 0x95, 0xe5, 0x76, 0xa0, 0xa4, 0xf1,
-	0xea, 0x79, 0x5f, 0x99, 0xa1, 0x32, 0xac, 0xc7, 0x8d, 0x00, 0x6f, 0x36, 0x6d, 0xf6, 0x84, 0xe5,
-	0x4d, 0xa6, 0x79, 0x3a, 0x90, 0x0e, 0xf6, 0x6c, 0x54, 0x4c, 0xa2, 0xf9, 0x98, 0x0f, 0x4d, 0xb5,
-	0xe6, 0x83, 0x39, 0x2d, 0xae, 0x63, 0x72, 0xbb, 0x72, 0xbe, 0x71, 0x03, 0x5d, 0x31, 0x9a, 0x08,
-	0x63, 0xe3, 0x2b, 0xbc, 0x5d, 0xe8, 0x1a, 0xad, 0xa4, 0x11, 0xa4, 0x8d, 0x6b, 0x60, 0xbc, 0x8b,
-	0x8e, 0xd0, 0xd9, 0x66, 0x2b, 0x4c, 0x0a, 0x47, 0x26, 0x80, 0x77, 0xfe, 0xcf, 0xdf, 0x0e, 0x83,
-	0xae, 0x47, 0xe3, 0x06, 0x0e, 0x9d, 0xd7, 0xa5, 0xb0, 0x17, 0x0e, 0xcb, 0x97, 0x5c, 0xe3, 0x9d,
-	0xb2, 0xf0, 0xbd, 0x07, 0x3a, 0xbf, 0xec, 0x01, 0x31, 0xdf, 0x03, 0x6f, 0xad, 0x4f, 0x84, 0x37,
-	0x9c, 0x1f, 0x91, 0xb8, 0x06, 0x49, 0xc8, 0x71, 0x69, 0xf0, 0xe7, 0xa9, 0x51, 0xfc, 0x17, 0x02,
-	0x79, 0xe2, 0x83, 0xc7, 0x97, 0x8f, 0xe7, 0x7f, 0x0d, 0x12, 0xb2, 0xaa, 0xaf, 0x4c, 0x6c, 0x1e,
-	0x97, 0x9c, 0x54, 0x99, 0x95, 0x0f, 0x8f, 0x4e, 0xd7, 0x50, 0x6b, 0xb6, 0x42, 0xe9, 0xb0, 0xf9,
-	0x92, 0xa2, 0xc5, 0x92, 0xa2, 0xf7, 0x25, 0x45, 0x4f, 0x19, 0x0d, 0x16, 0x19, 0x0d, 0x5e, 0x33,
-	0x1a, 0xdc, 0x85, 0x1e, 0x7c, 0xc8, 0x27, 0xec, 0x4c, 0x0b, 0xd3, 0xab, 0xb9, 0x3f, 0xde, 0xfe,
-	0x0a, 0x00, 0x00, 0xff, 0xff, 0xd9, 0xf4, 0x39, 0x5e, 0xb5, 0x02, 0x00, 0x00,
+	// 529 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0xd1, 0x6a, 0x13, 0x41,
+	0x14, 0x86, 0xb3, 0xb5, 0x0d, 0x38, 0x56, 0x84, 0x31, 0xb1, 0xba, 0x8d, 0xab, 0x1d, 0x62, 0x95,
+	0x2a, 0x3b, 0xb4, 0x79, 0x82, 0xb6, 0x68, 0x41, 0x10, 0x6a, 0xbc, 0xf3, 0x46, 0x26, 0xe9, 0xb0,
+	0x04, 0xb6, 0x33, 0xdb, 0x9d, 0x69, 0x69, 0x11, 0x6f, 0x7c, 0x82, 0x82, 0x08, 0x3e, 0x85, 0xcf,
+	0xd1, 0xcb, 0x82, 0x37, 0x5e, 0x89, 0x24, 0x3e, 0x88, 0x64, 0xce, 0x59, 0xba, 0x9b, 0x4e, 0x12,
+	0xf1, 0x6a, 0xb3, 0x73, 0xfe, 0x73, 0xfe, 0xef, 0x6c, 0xfe, 0x5d, 0xf2, 0xa0, 0x2f, 0xd4, 0x89,
+	0x30, 0x1c, 0x2f, 0x47, 0xc7, 0x32, 0x3f, 0x8b, 0xb3, 0x5c, 0x5b, 0x4d, 0x6f, 0xc3, 0x59, 0x0c,
+	0x97, 0xb0, 0x91, 0xe8, 0x44, 0xbb, 0x0a, 0x1f, 0xff, 0x02, 0x51, 0xd8, 0x4a, 0xb4, 0x4e, 0x52,
+	0xc9, 0x45, 0x36, 0xe0, 0x42, 0x29, 0x6d, 0x85, 0x1d, 0x68, 0x65, 0xb0, 0xba, 0xd1, 0xd7, 0xe6,
+	0x50, 0x1b, 0xde, 0x13, 0x46, 0xc2, 0x6c, 0x7e, 0xb2, 0xd9, 0x93, 0x56, 0x6c, 0xf2, 0x4c, 0x24,
+	0x03, 0xe5, 0xc4, 0xa8, 0x0d, 0xab, 0x24, 0x99, 0xc8, 0xc5, 0xa1, 0xf1, 0xd7, 0x10, 0x0c, 0x6a,
+	0x6b, 0xd5, 0x9a, 0xb1, 0x3a, 0x97, 0x07, 0x1f, 0xfa, 0x3a, 0xd5, 0x39, 0x4a, 0x58, 0x83, 0xd0,
+	0xb7, 0x63, 0xf3, 0x7d, 0x37, 0xb3, 0x2b, 0x8f, 0x8e, 0xa5, 0xb1, 0xec, 0x35, 0xb9, 0x5b, 0x39,
+	0x35, 0x99, 0x56, 0x46, 0xd2, 0x0e, 0xa9, 0x83, 0xf7, 0xfd, 0xe0, 0x71, 0xf0, 0xec, 0xd6, 0x56,
+	0x33, 0xae, 0x3c, 0x87, 0x18, 0xe4, 0x3b, 0x8b, 0x17, 0xbf, 0x1e, 0xd5, 0xba, 0x28, 0x65, 0x2b,
+	0xa4, 0xe9, 0x66, 0xed, 0x49, 0xbb, 0xeb, 0x64, 0x85, 0xc9, 0x1b, 0x72, 0x6f, 0xb2, 0x70, 0xe5,
+	0x03, 0x27, 0x53, 0x7c, 0xa0, 0x58, 0xf8, 0xc0, 0x1d, 0xeb, 0x90, 0xd5, 0x62, 0xdc, 0x3b, 0xb7,
+	0xe8, 0xae, 0xdb, 0x13, 0xdd, 0x68, 0x83, 0x2c, 0x0d, 0xd4, 0x81, 0x3c, 0x75, 0x23, 0x6f, 0x76,
+	0xe1, 0x86, 0x49, 0xd2, 0xf2, 0x37, 0x21, 0xc9, 0x4b, 0xb2, 0x6c, 0x4a, 0xe7, 0xc8, 0xb3, 0x3a,
+	0xc1, 0x53, 0x6e, 0x45, 0xaa, 0x4a, 0x1b, 0x93, 0xc8, 0xb6, 0x9d, 0xa6, 0x3e, 0xb6, 0x57, 0x84,
+	0x5c, 0xfd, 0xe7, 0xe8, 0xb1, 0x1e, 0x43, 0x40, 0xe2, 0x71, 0x40, 0x62, 0x08, 0x1f, 0x06, 0x24,
+	0xde, 0x17, 0x89, 0xc4, 0xde, 0x6e, 0xa9, 0x93, 0x7d, 0x0f, 0x70, 0x9d, 0x6b, 0x3e, 0x53, 0xd7,
+	0xb9, 0xf1, 0x1f, 0xeb, 0xd0, 0xbd, 0x0a, 0xef, 0x82, 0xe3, 0x7d, 0x3a, 0x97, 0x17, 0x18, 0xca,
+	0xc0, 0x5b, 0xdf, 0x16, 0xc9, 0x92, 0x03, 0xa6, 0x8a, 0xd4, 0x21, 0x3d, 0x74, 0x6d, 0x82, 0xe6,
+	0x7a, 0x3c, 0x43, 0x36, 0x4b, 0x02, 0x36, 0xec, 0xe1, 0xe7, 0x1f, 0x7f, 0xbe, 0x2c, 0xac, 0xd0,
+	0x26, 0xf7, 0xbd, 0x3c, 0xd4, 0x16, 0x11, 0xa3, 0x6d, 0xdf, 0xb0, 0xc9, 0xb0, 0x86, 0x4f, 0xe6,
+	0xa8, 0xe6, 0xb8, 0xc2, 0x85, 0x7e, 0x0d, 0xc8, 0x72, 0xf9, 0xe9, 0xd2, 0x8d, 0x29, 0x63, 0x3d,
+	0x29, 0x09, 0x9f, 0xff, 0x93, 0x16, 0x41, 0x5e, 0x38, 0x90, 0x75, 0xda, 0xe6, 0x33, 0xbe, 0x01,
+	0xfc, 0xa3, 0x7b, 0x0b, 0x3e, 0xd1, 0xf3, 0x80, 0xdc, 0x29, 0x8f, 0xd9, 0x4e, 0x53, 0x3f, 0x9a,
+	0x3f, 0xc0, 0x7e, 0xb4, 0x29, 0x21, 0x64, 0x6d, 0x87, 0x16, 0xd1, 0xd6, 0x2c, 0xb4, 0x1d, 0x7e,
+	0x31, 0x8c, 0x82, 0xcb, 0x61, 0x14, 0xfc, 0x1e, 0x46, 0xc1, 0xf9, 0x28, 0xaa, 0x5d, 0x8e, 0xa2,
+	0xda, 0xcf, 0x51, 0x54, 0x7b, 0xdf, 0x44, 0xfd, 0x69, 0xd1, 0x68, 0xcf, 0x32, 0x69, 0x7a, 0x75,
+	0xf7, 0x41, 0xeb, 0xfc, 0x0d, 0x00, 0x00, 0xff, 0xff, 0x70, 0xfa, 0x74, 0x95, 0xb7, 0x05, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -243,6 +444,10 @@ type QueryClient interface {
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
 	// Queries a Canvas by index.
 	Canvas(ctx context.Context, in *QueryGetCanvasRequest, opts ...grpc.CallOption) (*QueryGetCanvasResponse, error)
+	// Queries a StoredColors by index.
+	StoredColors(ctx context.Context, in *QueryGetStoredColorsRequest, opts ...grpc.CallOption) (*QueryGetStoredColorsResponse, error)
+	// Queries a list of StoredColors items.
+	StoredColorsAll(ctx context.Context, in *QueryAllStoredColorsRequest, opts ...grpc.CallOption) (*QueryAllStoredColorsResponse, error)
 }
 
 type queryClient struct {
@@ -271,12 +476,34 @@ func (c *queryClient) Canvas(ctx context.Context, in *QueryGetCanvasRequest, opt
 	return out, nil
 }
 
+func (c *queryClient) StoredColors(ctx context.Context, in *QueryGetStoredColorsRequest, opts ...grpc.CallOption) (*QueryGetStoredColorsResponse, error) {
+	out := new(QueryGetStoredColorsResponse)
+	err := c.cc.Invoke(ctx, "/canvas.canvas.Query/StoredColors", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) StoredColorsAll(ctx context.Context, in *QueryAllStoredColorsRequest, opts ...grpc.CallOption) (*QueryAllStoredColorsResponse, error) {
+	out := new(QueryAllStoredColorsResponse)
+	err := c.cc.Invoke(ctx, "/canvas.canvas.Query/StoredColorsAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
 	// Queries a Canvas by index.
 	Canvas(context.Context, *QueryGetCanvasRequest) (*QueryGetCanvasResponse, error)
+	// Queries a StoredColors by index.
+	StoredColors(context.Context, *QueryGetStoredColorsRequest) (*QueryGetStoredColorsResponse, error)
+	// Queries a list of StoredColors items.
+	StoredColorsAll(context.Context, *QueryAllStoredColorsRequest) (*QueryAllStoredColorsResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -288,6 +515,12 @@ func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsReq
 }
 func (*UnimplementedQueryServer) Canvas(ctx context.Context, req *QueryGetCanvasRequest) (*QueryGetCanvasResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Canvas not implemented")
+}
+func (*UnimplementedQueryServer) StoredColors(ctx context.Context, req *QueryGetStoredColorsRequest) (*QueryGetStoredColorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StoredColors not implemented")
+}
+func (*UnimplementedQueryServer) StoredColorsAll(ctx context.Context, req *QueryAllStoredColorsRequest) (*QueryAllStoredColorsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StoredColorsAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -330,6 +563,42 @@ func _Query_Canvas_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_StoredColors_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetStoredColorsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).StoredColors(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/canvas.canvas.Query/StoredColors",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).StoredColors(ctx, req.(*QueryGetStoredColorsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_StoredColorsAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllStoredColorsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).StoredColorsAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/canvas.canvas.Query/StoredColorsAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).StoredColorsAll(ctx, req.(*QueryAllStoredColorsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "canvas.canvas.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -341,6 +610,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Canvas",
 			Handler:    _Query_Canvas_Handler,
+		},
+		{
+			MethodName: "StoredColors",
+			Handler:    _Query_StoredColors_Handler,
+		},
+		{
+			MethodName: "StoredColorsAll",
+			Handler:    _Query_StoredColorsAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -459,6 +736,153 @@ func (m *QueryGetCanvasResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) 
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetStoredColorsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetStoredColorsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetStoredColorsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetStoredColorsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetStoredColorsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetStoredColorsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.StoredColors.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllStoredColorsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllStoredColorsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllStoredColorsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllStoredColorsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllStoredColorsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllStoredColorsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.StoredColors) > 0 {
+		for iNdEx := len(m.StoredColors) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.StoredColors[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -507,6 +931,62 @@ func (m *QueryGetCanvasResponse) Size() (n int) {
 	_ = l
 	l = m.Canvas.Size()
 	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetStoredColorsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetStoredColorsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.StoredColors.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllStoredColorsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllStoredColorsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.StoredColors) > 0 {
+		for _, e := range m.StoredColors {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
 	return n
 }
 
@@ -758,6 +1238,377 @@ func (m *QueryGetCanvasResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Canvas.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetStoredColorsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetStoredColorsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetStoredColorsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetStoredColorsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetStoredColorsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetStoredColorsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StoredColors", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.StoredColors.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllStoredColorsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllStoredColorsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllStoredColorsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllStoredColorsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllStoredColorsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllStoredColorsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StoredColors", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StoredColors = append(m.StoredColors, StoredColors{})
+			if err := m.StoredColors[len(m.StoredColors)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

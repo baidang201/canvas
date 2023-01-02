@@ -1,7 +1,9 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { Canvas } from "./canvas";
 import { Params } from "./params";
+import { StoredColors } from "./stored_colors";
 
 export const protobufPackage = "canvas.canvas";
 
@@ -20,6 +22,23 @@ export interface QueryGetCanvasRequest {
 
 export interface QueryGetCanvasResponse {
   Canvas: Canvas | undefined;
+}
+
+export interface QueryGetStoredColorsRequest {
+  index: string;
+}
+
+export interface QueryGetStoredColorsResponse {
+  storedColors: StoredColors | undefined;
+}
+
+export interface QueryAllStoredColorsRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllStoredColorsResponse {
+  storedColors: StoredColors[];
+  pagination: PageResponse | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -198,12 +217,230 @@ export const QueryGetCanvasResponse = {
   },
 };
 
+function createBaseQueryGetStoredColorsRequest(): QueryGetStoredColorsRequest {
+  return { index: "" };
+}
+
+export const QueryGetStoredColorsRequest = {
+  encode(message: QueryGetStoredColorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetStoredColorsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetStoredColorsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetStoredColorsRequest {
+    return { index: isSet(object.index) ? String(object.index) : "" };
+  },
+
+  toJSON(message: QueryGetStoredColorsRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetStoredColorsRequest>, I>>(object: I): QueryGetStoredColorsRequest {
+    const message = createBaseQueryGetStoredColorsRequest();
+    message.index = object.index ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryGetStoredColorsResponse(): QueryGetStoredColorsResponse {
+  return { storedColors: undefined };
+}
+
+export const QueryGetStoredColorsResponse = {
+  encode(message: QueryGetStoredColorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storedColors !== undefined) {
+      StoredColors.encode(message.storedColors, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetStoredColorsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetStoredColorsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storedColors = StoredColors.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetStoredColorsResponse {
+    return { storedColors: isSet(object.storedColors) ? StoredColors.fromJSON(object.storedColors) : undefined };
+  },
+
+  toJSON(message: QueryGetStoredColorsResponse): unknown {
+    const obj: any = {};
+    message.storedColors !== undefined
+      && (obj.storedColors = message.storedColors ? StoredColors.toJSON(message.storedColors) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetStoredColorsResponse>, I>>(object: I): QueryGetStoredColorsResponse {
+    const message = createBaseQueryGetStoredColorsResponse();
+    message.storedColors = (object.storedColors !== undefined && object.storedColors !== null)
+      ? StoredColors.fromPartial(object.storedColors)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllStoredColorsRequest(): QueryAllStoredColorsRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllStoredColorsRequest = {
+  encode(message: QueryAllStoredColorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllStoredColorsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllStoredColorsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllStoredColorsRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllStoredColorsRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllStoredColorsRequest>, I>>(object: I): QueryAllStoredColorsRequest {
+    const message = createBaseQueryAllStoredColorsRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllStoredColorsResponse(): QueryAllStoredColorsResponse {
+  return { storedColors: [], pagination: undefined };
+}
+
+export const QueryAllStoredColorsResponse = {
+  encode(message: QueryAllStoredColorsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.storedColors) {
+      StoredColors.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllStoredColorsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllStoredColorsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storedColors.push(StoredColors.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllStoredColorsResponse {
+    return {
+      storedColors: Array.isArray(object?.storedColors)
+        ? object.storedColors.map((e: any) => StoredColors.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllStoredColorsResponse): unknown {
+    const obj: any = {};
+    if (message.storedColors) {
+      obj.storedColors = message.storedColors.map((e) => e ? StoredColors.toJSON(e) : undefined);
+    } else {
+      obj.storedColors = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllStoredColorsResponse>, I>>(object: I): QueryAllStoredColorsResponse {
+    const message = createBaseQueryAllStoredColorsResponse();
+    message.storedColors = object.storedColors?.map((e) => StoredColors.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a Canvas by index. */
   Canvas(request: QueryGetCanvasRequest): Promise<QueryGetCanvasResponse>;
+  /** Queries a StoredColors by index. */
+  StoredColors(request: QueryGetStoredColorsRequest): Promise<QueryGetStoredColorsResponse>;
+  /** Queries a list of StoredColors items. */
+  StoredColorsAll(request: QueryAllStoredColorsRequest): Promise<QueryAllStoredColorsResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -212,6 +449,8 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.Canvas = this.Canvas.bind(this);
+    this.StoredColors = this.StoredColors.bind(this);
+    this.StoredColorsAll = this.StoredColorsAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -223,6 +462,18 @@ export class QueryClientImpl implements Query {
     const data = QueryGetCanvasRequest.encode(request).finish();
     const promise = this.rpc.request("canvas.canvas.Query", "Canvas", data);
     return promise.then((data) => QueryGetCanvasResponse.decode(new _m0.Reader(data)));
+  }
+
+  StoredColors(request: QueryGetStoredColorsRequest): Promise<QueryGetStoredColorsResponse> {
+    const data = QueryGetStoredColorsRequest.encode(request).finish();
+    const promise = this.rpc.request("canvas.canvas.Query", "StoredColors", data);
+    return promise.then((data) => QueryGetStoredColorsResponse.decode(new _m0.Reader(data)));
+  }
+
+  StoredColorsAll(request: QueryAllStoredColorsRequest): Promise<QueryAllStoredColorsResponse> {
+    const data = QueryAllStoredColorsRequest.encode(request).finish();
+    const promise = this.rpc.request("canvas.canvas.Query", "StoredColorsAll", data);
+    return promise.then((data) => QueryAllStoredColorsResponse.decode(new _m0.Reader(data)));
   }
 }
 

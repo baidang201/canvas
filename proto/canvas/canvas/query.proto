@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "canvas/canvas/params.proto";
 import "canvas/canvas/canvas.proto";
+import "canvas/canvas/stored_colors.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "canvas/x/canvas/types";
@@ -20,6 +21,16 @@ service Query {
 	rpc Canvas(QueryGetCanvasRequest) returns (QueryGetCanvasResponse) {
 		option (google.api.http).get = "/canvas/canvas/canvas";
 	}
+// Queries a StoredColors by index.
+	rpc StoredColors(QueryGetStoredColorsRequest) returns (QueryGetStoredColorsResponse) {
+		option (google.api.http).get = "/canvas/canvas/stored_colors/{index}";
+	}
+
+	// Queries a list of StoredColors items.
+	rpc StoredColorsAll(QueryAllStoredColorsRequest) returns (QueryAllStoredColorsResponse) {
+		option (google.api.http).get = "/canvas/canvas/stored_colors";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -37,4 +48,22 @@ message QueryGetCanvasRequest {}
 message QueryGetCanvasResponse {
 	Canvas Canvas = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetStoredColorsRequest {
+	  string index = 1;
+
+}
+
+message QueryGetStoredColorsResponse {
+	StoredColors storedColors = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllStoredColorsRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllStoredColorsResponse {
+	repeated StoredColors storedColors = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 // this line is used by starport scaffolding # 3

@@ -3,9 +3,10 @@ import { Client, registry, MissingWalletError } from 'canvas-client-ts'
 import { Canvas } from "canvas-client-ts/canvas.canvas/types"
 import { Params } from "canvas-client-ts/canvas.canvas/types"
 import { Point } from "canvas-client-ts/canvas.canvas/types"
+import { StoredColors } from "canvas-client-ts/canvas.canvas/types"
 
 
-export { Canvas, Params, Point };
+export { Canvas, Params, Point, StoredColors };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -38,11 +39,14 @@ const getDefaultState = () => {
 	return {
 				Params: {},
 				Canvas: {},
+				StoredColors: {},
+				StoredColorsAll: {},
 				
 				_Structure: {
 						Canvas: getStructure(Canvas.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						Point: getStructure(Point.fromPartial({})),
+						StoredColors: getStructure(StoredColors.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -82,6 +86,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Canvas[JSON.stringify(params)] ?? {}
+		},
+				getStoredColors: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.StoredColors[JSON.stringify(params)] ?? {}
+		},
+				getStoredColorsAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.StoredColorsAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -156,6 +172,54 @@ export default {
 				return getters['getCanvas']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryCanvas API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryStoredColors({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.CanvasCanvas.query.queryStoredColors( key.index)).data
+				
+					
+				commit('QUERY', { query: 'StoredColors', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryStoredColors', payload: { options: { all }, params: {...key},query }})
+				return getters['getStoredColors']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryStoredColors API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryStoredColorsAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.CanvasCanvas.query.queryStoredColorsAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.CanvasCanvas.query.queryStoredColorsAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'StoredColorsAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryStoredColorsAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getStoredColorsAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryStoredColorsAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

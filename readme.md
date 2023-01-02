@@ -76,6 +76,11 @@ ignite scaffold type point x:uint y:uint color  \
     --module canvas \
     --no-message
 
+ignite scaffold map storedColors color:uint \
+    --index index \
+    --module canvas \
+    --no-message
+
 //modify canvas/x/canvas/keeper/msg_server_create_canvas.go
 ```
 package keeper
@@ -84,7 +89,6 @@ import (
 	"context"
 
 	"canvas/x/canvas/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
@@ -92,14 +96,12 @@ func (k msgServer) CreateCanvas(goCtx context.Context, msg *types.MsgCreateCanva
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// TODO: Handling the message
-	kvStore := ctx.KVStore(k.storeKey)
-	prefixStore := prefix.NewStore(kvStore, []byte("canvas/"))
-
-	if prefixStore.Has([]byte(msg.Id)) {
+	canvas, found := k.GetCanvas(ctx)
+	if found {
 		return nil, types.ErrCanvasAlreadyExist
 	}
 
-	canvas := types.Canvas{
+	canvas = types.Canvas{
 		//Id:               msg.Id,
 		Width:            msg.Width,
 		Height:           msg.Height,
@@ -107,83 +109,108 @@ func (k msgServer) CreateCanvas(goCtx context.Context, msg *types.MsgCreateCanva
 		AllowDenomPrefix: msg.AllowDenomPrefix,
 		PriceForPoint:    msg.PriceForPoint,
 	}
-
-	bz, err := k.cdc.Marshal(&canvas)
-	if err != nil {
-		return nil, err
-	}
-
-	prefixStore.Set([]byte(msg.Id), bz)
+	k.SetCanvas(ctx, canvas)
 
 	return &types.MsgCreateCanvasResponse{
 		GameIndex: msg.Id,
 	}, nil
 }
+
 ```
 
 //modify canvas/x/canvas/keeper/msg_server_paint.go
 ```
-package keeper
+package types
 
 import (
-	"context"
-  "fmt"
-
-	"canvas/x/canvas/types"
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-func (k msgServer) Paint(goCtx context.Context, msg *types.MsgPaint) (*types.MsgPaintResponse, error) {
-	ctx := sdk.UnwrapSDKContext(goCtx)
+const TypeMsgPaint = "paint"
 
-	// TODO: Handling the message
-	canvas, found := k.GetCanvas(ctx)
-	if !found {
-		return nil, types.ErrCanvasNotExist
+var _ sdk.Msg = &MsgPaint{}
+
+func NewMsgPaint(creator string, id string, x uint64, y uint64, amount uint64) *MsgPaint {
+	return &MsgPaint{
+		Creator: creator,
+		Id:      id,
+		X:       x,
+		Y:       y,
+		Amount:  amount,
 	}
+}
 
-	if msg.X >= canvas.Width || msg.Y >= canvas.Height {
-		return nil, types.ErrPointGetOut
-	}
+func (msg *MsgPaint) Route() string {
+	return RouterKey
+}
 
-	// if !strings.HasPrefix(amount.Denom, canvas.AllowDenomPrefix) {
-	// 	return nil, types.ErrInvalidDenomPrefix
-	// }
+func (msg *MsgPaint) Type() string {
+	return TypeMsgPaint
+}
 
-	// if amount.Amount.IsNegative() || !amount.Amount.Equal(sdk.NewInt(int64(canvas.PriceForPoint))) {
-	// 	return nil, types.ErrInvalidAmount
-	// }
-
-	kvStore := ctx.KVStore(k.storeKey)
-
-	// err = keeper.bankKeeper.SendCoinsFromAccountToModule(ctx, sender, types.ModuleName, sdk.Coins{amount})
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	prefixStore := prefix.NewStore(kvStore, []byte(fmt.Sprintf("point/%s/", msg.Id)))
-
-	//msg.Amount is RGBint by smith design
-	//Blue =  msg.Amount & 255
-	//Green = (msg.Amount >> 8) & 255
-	//Red =   (msg.Amount >> 16) & 255
-	point := types.Point{
-		X:     msg.X,
-		Y:     msg.Y,
-		Color: string(msg.Amount),
-	}
-
-	bz, err := k.cdc.Marshal(&point)
+func (msg *MsgPaint) GetSigners() []sdk.AccAddress {
+	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
+	return []sdk.AccAddress{creator}
+}
 
-	prefixStore.Set([]byte(fmt.Sprintf("%d/%d", msg.X, msg.Y)), bz)
+func (msg *MsgPaint) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
 
-	return &types.MsgPaintResponse{}, nil
+func (msg *MsgPaint) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
+	}
+	return nil
 }
 
 ```
 
 ignite chain serve
+
+
+```
+cd cmd/canvasd
+go build
+
+export alice=$(canvasd keys show alice -a)
+echo $alice
+
+
+canvasd tx canvas create-canvas 0 100 100 "" "" 1 --from $alice --gas auto
+
+canvasd query canvas show-canvas 
+```
+
+output
+```
+  allowDenomPrefix: ""
+  height: "100"
+  priceForPoint: "1"
+  refundDuration: ""
+  width: "100"
+```
+
+```
+canvasd tx canvas paint 0 0 0  0 --from $alice --gas auto
+canvasd tx canvas paint 0 0 1   2550 --from $alice --gas auto
+
+canvasd query canvas  list-stored-colors
+```
+output
+```
+pagination:
+  next_key: null
+  total: "0"
+storedColors:
+- color: "0"
+  index: 0/0
+- color: "2550"
+  index: 0/1
+```

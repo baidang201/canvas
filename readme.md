@@ -221,3 +221,11 @@ storedColors:
 - color: "2550"
   index: 0/1
 ```
+
+## run vue
+ignite generate vuex
+ignite generate ts-client --clear-cache 
+
+cd vue
+npm install
+npm run dev

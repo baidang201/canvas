@@ -36,7 +36,7 @@ CanvasStargateClient.prototype.getAllStoredColors = async function (): Promise<S
         await this.canvasQueryClient!.canvas.getAllStoredColors(
             Uint8Array.from([]),
             Long.ZERO,
-            Long.fromNumber(100),
+            Long.fromNumber(10000),
             true,
         )
     ).storedColors

@@ -115,7 +115,7 @@ export const Canvas: FunctionComponent<{
         CanvasUtils.drawRect(ctx, 0, 0, width, height, scale, "white");
         
         for (const point of canvasPoints.points) {
-          let fill = parseInt(point.color).toString(16);
+          let fill = "#" + parseInt(point.color).toString(16);
           if (!fill) {
             fill = "#000000";
           }

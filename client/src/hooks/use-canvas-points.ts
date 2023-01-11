@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CanvasSigningStargateClient } from "../checkers_signingstargateclient"
 import { CanvasStargateClient } from "../checkers_stargateclient"
 import { OfflineSigner } from "@cosmjs/proto-signing"
@@ -27,6 +27,30 @@ export const useCanvasPoints = (baseUrl: string, id: string) => {
   const [signingClient, setSigningClient] = useState<CanvasSigningStargateClient| undefined>();
   const [creator, setCreator] = useState<string>();
   const [address, setAddress] = useState<any>();
+
+  const [value, setValue] = useState<number>(0);
+  const [timers, setTimers] = useState<Array<NodeJS.Timeout>>([]);
+  const saveCallBack: any = useRef();
+  const callBack = () => {
+    setValue(value + 1);
+  };
+
+  useEffect(() => {
+    saveCallBack.current = callBack;
+    return () => {};
+  });
+  useEffect(() => {
+    const tick = () => {
+      saveCallBack.current();
+    };
+    const timer: NodeJS.Timeout = setInterval(tick, 3000);
+    timers.push(timer);
+    setTimers(timers);
+    console.log(timers);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   const getStargateClient = async (): Promise<CanvasStargateClient> =>{
     const client: CanvasStargateClient =
@@ -58,12 +82,8 @@ export const useCanvasPoints = (baseUrl: string, id: string) => {
           };
 
           localPoints.push(p)
-
-          console.log("#####in localPoints", index, localPoints)
         }
-        console.log("#####before set localPoints", localPoints)
         setPoints(localPoints);
-        console.log("##### points", points, baseUrl, id)
       } 
     }
 
@@ -71,7 +91,7 @@ export const useCanvasPoints = (baseUrl: string, id: string) => {
     fetchData()
     // make sure to catch any error
     .catch(console.error);
-  }, [baseUrl, id]);
+  }, [baseUrl, id, value]);
 
   return {
     url: "",

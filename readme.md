@@ -116,8 +116,9 @@ output
 
 ## paint point
 ```
-canvasd tx canvas paint 0 0 0  0 --from $alice --gas auto
-canvasd tx canvas paint 0 0 1   2550 --from $alice --gas auto
+canvasd tx canvas paint 0 0 0 0 --from $alice --gas auto
+canvasd tx canvas paint 0 0 1 2550 --from $alice --gas auto
+canvasd tx canvas paint 0 50 50 0 --from $alice --gas 100000
 
 canvasd query canvas  list-stored-colors
 ```

@@ -46,10 +46,10 @@ export const getCanvasChainInfo = (): ChainInfo => ({
         coinGeckoId: "stake",
     },
     coinType: 118,
-    gasPriceStep: {
-        low: 1,
-        average: 1,
-        high: 1,
-    },
+    // gasPriceStep: {
+    //     low: 1,
+    //     average: 1,
+    //     high: 1,
+    // },
     features: ["stargate", "ibc-transfer", "no-legacy-stdTx"],
 })

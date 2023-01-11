@@ -36,7 +36,7 @@ CanvasStargateClient.prototype.getAllStoredColors = async function (): Promise<S
         await this.canvasQueryClient!.canvas.getAllStoredColors(
             Uint8Array.from([]),
             Long.ZERO,
-            Long.fromNumber(1000),
+            Long.fromNumber(100),
             true,
         )
     ).storedColors
@@ -54,7 +54,7 @@ CanvasSigningStargateClient.prototype.createGuiCanvas = async function (
     width: Long,
     height: Long
 ): Promise<string> {
-    return getCreatedCanvasId(await this.createCanvas(creator, id, width, height, "auto"), 0)
+    return getCreatedCanvasId(await this.createCanvas(creator, id, width, height, 2000000), 0)
 }
 
 CanvasSigningStargateClient.prototype.paintGui = async function (
@@ -63,7 +63,7 @@ CanvasSigningStargateClient.prototype.paintGui = async function (
     pos: Pos,
     rgb: Long
 ): Promise<void> {
-    await this.paint(creator, id, pos, rgb, "auto")
+    await this.paint(creator, id, pos, rgb, 2000000)
 }
 
 export {}

@@ -1,6 +1,6 @@
 {
-  "short_name": "Checkers",
-  "name": "1 or 2 Player Checkers written in React.js",
+  "short_name": "Canvas",
+  "name": "1 or 2 Player Canvas written in React.js",
   "icons": [
     {
       "src": "favicon.ico",

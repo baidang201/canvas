@@ -1,6 +1,6 @@
-# CosmJs Part For Checkers Blockchain
+# CosmJs Part For Canvas Blockchain
 
-This project contains the elements, messages, scripts and GUI of the Checkers blockchain.
+This project contains the elements, messages, scripts and GUI of the Canvas blockchain.
 
 ## Branches progression
 

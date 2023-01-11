@@ -225,19 +225,6 @@ export default {
 		},
 		
 		
-		async sendMsgCreateCanvas({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.CanvasCanvas.tx.sendMsgCreateCanvas({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCreateCanvas:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCreateCanvas:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgPaint({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -251,20 +238,20 @@ export default {
 				}
 			}
 		},
-		
-		async MsgCreateCanvas({ rootGetters }, { value }) {
+		async sendMsgCreateCanvas({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.CanvasCanvas.tx.msgCreateCanvas({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.CanvasCanvas.tx.sendMsgCreateCanvas({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgCreateCanvas:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCreateCanvas:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgCreateCanvas:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgPaint({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -275,6 +262,19 @@ export default {
 					throw new Error('TxClient:MsgPaint:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgPaint:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateCanvas({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.CanvasCanvas.tx.msgCreateCanvas({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateCanvas:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateCanvas:Create Could not create message: ' + e.message)
 				}
 			}
 		},

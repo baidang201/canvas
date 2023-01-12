@@ -1,5 +1,5 @@
 # canvas
-**canvas** is a game and a radical social experimentation in stake decentralization. We use elements of entertainment, scarcity, competition, and economics to incentivize voting power distribution of a proof-of-stake blockchain.
+**canvas** is a game and a radical social experimentation in stake decentralization. We use elements of entertainment, scarcity, competition, and economics to incentivize artistic creation.
 
 ![place-reddit](img/place-reddit.png)
 

@@ -44,9 +44,6 @@ export const useCanvasPoints = (baseUrl: string, id: string) => {
       saveCallBack.current();
     };
     const timer: NodeJS.Timeout = setInterval(tick, 3000);
-    timers.push(timer);
-    setTimers(timers);
-    console.log(timers);
     return () => {
       clearInterval(timer);
     };

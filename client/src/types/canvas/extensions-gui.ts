@@ -54,7 +54,7 @@ CanvasSigningStargateClient.prototype.createGuiCanvas = async function (
     width: Long,
     height: Long
 ): Promise<string> {
-    return getCreatedCanvasId(await this.createCanvas(creator, id, width, height, 2000000), 0)
+    return getCreatedCanvasId(await this.createCanvas(creator, id, width, height, 200), 0)
 }
 
 CanvasSigningStargateClient.prototype.paintGui = async function (
@@ -63,7 +63,8 @@ CanvasSigningStargateClient.prototype.paintGui = async function (
     pos: Pos,
     rgb: Long
 ): Promise<void> {
-    await this.paint(creator, id, pos, rgb, 2000000)
+    console.log(console.log("#### paintGui", pos, rgb));
+    await this.paint(creator, id, pos, rgb, 200)
 }
 
 export {}

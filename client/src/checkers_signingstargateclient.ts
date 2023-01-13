@@ -88,7 +88,6 @@ export class CanvasSigningStargateClient extends SigningStargateClient {
         fee: StdFee | "auto" | number,
         memo = "",
     ): Promise<DeliverTxResponse> {
-        console.log("#### paint pos", pos.x, pos.y);
         const paintMsg: MsgPaintEncodeObject = {
             typeUrl: typeUrlMsgPaint,
             value: {

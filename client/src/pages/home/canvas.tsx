@@ -51,15 +51,10 @@ export const CanvasTools: FunctionComponent<{
 
   const onColorChangeCallback = useCallback(
     (e: any) => {
-      for (const denom of Object.keys(DenomToColor)) {
-        if (DenomToColor[denom].toLowerCase() === e.hex.toLowerCase()) {
           onColorChange({
-            denom,
+            denom: "denom",
             color: e.hex
           });
-          break;
-        }
-      }
     },
     [onColorChange]
   );
@@ -106,6 +101,11 @@ export const Canvas: FunctionComponent<{
   const [creator, setCreator] = useState<string>();
   const [address, setAddress] = useState<any>();
 
+  function pad(hex: string, size: number) {
+    while (hex.length < size) hex = "0" + hex;
+    return hex;
+  }
+
   useEffect(() => {
     if (backLayer.current) {
       const ctx = backLayer.current.getContext("2d");
@@ -115,7 +115,8 @@ export const Canvas: FunctionComponent<{
         CanvasUtils.drawRect(ctx, 0, 0, width, height, scale, "white");
         
         for (const point of canvasPoints.points) {
-          let fill = "#" + parseInt(point.color).toString(16);
+          let baseHex = parseInt(point.color).toString(16)
+          let fill = "#" + pad(baseHex, 6);
           if (!fill) {
             fill = "#000000";
           }
@@ -147,7 +148,7 @@ export const Canvas: FunctionComponent<{
             1,
             1,
             scale,
-            DenomToColor[point.color] ? DenomToColor[point.color] : "black",
+            point.color ? point.color : "black",
             "black",
             0.1
           );
@@ -206,7 +207,7 @@ export const Canvas: FunctionComponent<{
       _pointsToFill.push({
         x: mousePosition.x,
         y: mousePosition.y,
-        color: colorToFill.denom
+        color: colorToFill.color
       });
       setPointsToFill(_pointsToFill);
     }
@@ -248,7 +249,8 @@ export const Canvas: FunctionComponent<{
       for (const point of pointsToFill) {
         const { creator, signingClient } = await getSigningStargateClient()
         try {
-            await signingClient.paintGui(creator, "0", point, Long.fromNumber(parseInt(point.color)) )
+            let hex = point.color.replace('#', '');
+            await signingClient.paintGui(creator, "0", point, Long.fromNumber(parseInt(hex, 16)) )
         } catch (e) {
             console.error(e)
             alert("Failed to paintGui: " + e)
